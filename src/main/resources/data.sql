@@ -1,0 +1,1 @@
+INSERT INTO BOOK (book_Id, book_Title, price) VALUES ('978-1-62544-276-5', 'All My Friends', 10);
