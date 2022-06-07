@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class BookController {
@@ -20,7 +22,15 @@ public class BookController {
     @GetMapping({"/{getBooks}"})
     public ResponseEntity<List<Book>> getBooks() {
         List<Book> booksList = bookStoreService.getBooks();
-      //  return booksList;
         return new ResponseEntity<>(bookStoreService.getBooks(), HttpStatus.OK);
     }
+
+    //The function receives a GET request for the given ID, processes it and gives back Book details for the given id as a response.
+    @GetMapping("/bookById/{id}")
+    public Optional<Book> getBookById(@PathVariable Long id) {
+        return bookStoreService.getBookById(id);
+    }
+
+
+
 }
