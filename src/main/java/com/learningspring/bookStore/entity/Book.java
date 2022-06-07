@@ -1,8 +1,10 @@
 package com.learningspring.bookStore.entity;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import javax.persistence.*;
 
@@ -12,11 +14,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Book {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Column(unique = true)
+    @NotNull
     private Long id;
     @Column
-    private String book_Id;
+    private String isbn;
     @Column
     private String book_Title;
     @Column

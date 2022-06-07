@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-
 public class BookStoreServiceImpl implements BookStoreService {
 
     @Autowired
@@ -26,19 +25,15 @@ public class BookStoreServiceImpl implements BookStoreService {
     public Optional<Book> getBookById(Long id) throws BookNotFoundException {
         return bookRepository.findById(id);
     }
-/*
+
     @Override
-    public Book insert(Book bookdetails) {
-        return null;
+    public Book addBook(Book newBook) {
+        return bookRepository.save(newBook);
     }
 
     @Override
-    public void updateBookDetails(Long id, Book bookdetails) {
+    public void deleteBook(Long id) {
+        bookRepository.deleteById(id);
     }
 
-    @Override
-    public void deleteBookDetails(Long Id) {
-
-    }
-    */
 }
