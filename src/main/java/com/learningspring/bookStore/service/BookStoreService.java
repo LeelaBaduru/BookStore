@@ -12,11 +12,7 @@ public interface BookStoreService {
 
     Optional<Book> getBookById(Long id);
 
-/*
-    Book insert(Book bookdetails);
+    Book addBook(Book newBook);
+    void deleteBook(Long Id);
 
-    void updateBookDetails(Long id, Book bookdetails);
-
-    void deleteBookDetails(Long Id);
-*/
 }
