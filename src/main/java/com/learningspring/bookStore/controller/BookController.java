@@ -1,6 +1,7 @@
 package com.learningspring.bookStore.controller;
 
 import com.learningspring.bookStore.entity.Book;
+import com.learningspring.bookStore.exception.BookNotFoundException;
 import com.learningspring.bookStore.service.BookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,6 @@ public class BookController {
     //The function receives a GET request for the given ID, processes it and gives back Book details for the given id as a response.
     @GetMapping("/bookById/{id}")
     public Optional<Book> getBookById(@PathVariable Long id) {
-        return bookStoreService.getBookById(id);
+        return Optional.ofNullable(bookStoreService.getBookById(id).orElseThrow(() -> new BookNotFoundException(id)));
     }
-
-
-
 }
