@@ -6,6 +6,7 @@ import com.learningspring.bookStore.service.BookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,20 +15,22 @@ import java.util.Optional;
 @RestController
 public class BookController {
 
+    private static final String DETAILS = "Book details";
+
     @Autowired
     private BookStoreService bookStoreService;
 
     //The function handles a GET request, processes it and gives back a list of Books as a response.
     @GetMapping({"/{getBooks}"})
-    public ResponseEntity<List<Book>> getBooks() {
-        List<Book> booksList = bookStoreService.getBooks();
-        return new ResponseEntity<>(bookStoreService.getBooks(), HttpStatus.OK);
+    public  List<Book> getBooks() throws BookNotFoundException {
+        return bookStoreService.getBooks();
     }
+
 
     //The function handles a GET request for the given ID, processes it and gives back Book details for the given id as a response.
     @GetMapping("/bookById/{id}")
-    public Optional<Book> getBookById(@PathVariable Long id) {
-        return Optional.ofNullable(bookStoreService.getBookById(id).orElseThrow(() -> new BookNotFoundException(id)));
+    public Optional<Book> getBookById(@PathVariable Long id) throws BookNotFoundException {
+        return bookStoreService.getBookById(id);
     }
 
     //The function handles a POST request and Insert new books into database.

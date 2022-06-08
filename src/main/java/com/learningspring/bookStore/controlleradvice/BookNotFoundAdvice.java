@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-// This class gets triggered when the exception is thrown by controller. It converts the exceptions to be returned with appropriate error message
+/* This class gets triggered when the exception is thrown by controller and Exceptions thrown by a Controller method is mapped to the ControllerAdvice method using @ExceptionHandler annotations.
+    It converts the exceptions to be returned with appropriate error message */
 
 @ControllerAdvice
 public class BookNotFoundAdvice {
@@ -17,4 +18,5 @@ public class BookNotFoundAdvice {
     String bookNotFoundHandler(BookNotFoundException ex) {
         return ex.getMessage();
     }
+
 }

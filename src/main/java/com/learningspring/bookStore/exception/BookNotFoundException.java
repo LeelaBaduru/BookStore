@@ -2,7 +2,9 @@ package com.learningspring.bookStore.exception;
 
 public class BookNotFoundException extends RuntimeException {
 
-    public BookNotFoundException(Long id) {
-        super("Could not find Book " + id);
+    private static final long serialVersionUID = 1L;
+    public BookNotFoundException(String message) {
+
+        super(message);
     }
 }
