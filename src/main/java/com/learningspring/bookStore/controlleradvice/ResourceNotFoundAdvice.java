@@ -1,6 +1,6 @@
 package com.learningspring.bookStore.controlleradvice;
 
-import com.learningspring.bookStore.exception.BookNotFoundException;
+import com.learningspring.bookStore.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
     It converts the exceptions to be returned with appropriate error message */
 
 @ControllerAdvice
-public class BookNotFoundAdvice {
+public class ResourceNotFoundAdvice {
     @ResponseBody
-    @ExceptionHandler(BookNotFoundException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String bookNotFoundHandler(BookNotFoundException ex) {
+    String bookNotFoundHandler(ResourceNotFoundException ex) {
         return ex.getMessage();
     }
 
