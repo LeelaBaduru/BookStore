@@ -1,7 +1,7 @@
 package com.learningspring.bookStore.service;
 
 import com.learningspring.bookStore.entity.Book;
-import com.learningspring.bookStore.exception.BookNotFoundException;
+import com.learningspring.bookStore.exception.ResourceNotFoundException;
 import com.learningspring.bookStore.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,21 +20,21 @@ public class BookStoreServiceImpl implements BookStoreService {
     private BookRepository bookRepository;
 
     @Override
-    public List<Book> getBooks() throws BookNotFoundException{
+    public List<Book> getBooks() throws ResourceNotFoundException {
         List<Book> booksList = bookRepository.findAll();
         if(booksList.isEmpty()) {
-            throw new BookNotFoundException("Currently there are no books in store");
+            throw new ResourceNotFoundException("Currently there are no books in store");
         }
         return booksList;
     }
 
     @Override
-    public Optional<Book> getBookById(Long id) throws BookNotFoundException {
+    public Optional<Book> getBookById(Long id) throws ResourceNotFoundException {
         Optional<Book> book = bookRepository.findById(id);
         if(book.isPresent()) {
             return book;
         }
-        else throw new BookNotFoundException("Book is not available in store:" + id);
+        else throw new ResourceNotFoundException("Book is not available in store:" + id);
     }
 
     @Override
