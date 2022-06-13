@@ -27,6 +27,7 @@ public class BookController {
         return bookStoreService.getBooks();
     }
 
+
     //The function handles a GET request. For the given bookID, Book details are fetched from the database and returns the book details.
     @GetMapping("/{id}")
     public Optional<Book> getBookById(@PathVariable Long id) throws ResourceNotFoundException {
@@ -42,7 +43,8 @@ public class BookController {
         return bookStoreService.addBook(newBookCreated);
     }
 
-     //The function handles a PUT request. Update book details and authorId with the respective book
+
+    //The function handles a PUT request. Update book details and authorId with the respective book
     @PutMapping("/{bookId}/authors/{authorId}")
     public Book updateBook(@RequestBody Book updateBook, @PathVariable Long bookId, @PathVariable Long authorId) throws ResourceNotFoundException {
         Book book = bookStoreService.getBookById(bookId).get();
@@ -55,7 +57,7 @@ public class BookController {
                 }
 
 
-     //The function handles a DELETE request to delete book details from a database.
+    //The function handles a DELETE request to delete book details from a database.
     @DeleteMapping("/{id}")
     void deleteBook(@PathVariable Long id) {
          bookStoreService.deleteBook(id);
