@@ -1,7 +1,6 @@
 package com.learningspring.bookStore.service;
 
 import com.learningspring.bookStore.entity.Author;
-import com.learningspring.bookStore.entity.Book;
 import com.learningspring.bookStore.exception.ResourceNotFoundException;
 import com.learningspring.bookStore.repository.AuthorRepository;
 import org.slf4j.Logger;
@@ -19,6 +18,7 @@ public class AuthorService {
     @Autowired
     private AuthorRepository authorRepository;
 
+
     public List<Author> getAuthorsList() {
         List<Author> authorsList = authorRepository.findAll();
         logger.info("Inside service Author list");
@@ -31,5 +31,13 @@ public class AuthorService {
             return author;
         }
         else throw new ResourceNotFoundException("Author is not available in database:" + id);
+    }
+
+    public Author addAuthor(Author newAuthor) {
+        return authorRepository.save(newAuthor);
+    }
+
+    public void deleteAuthor(Long id) {
+      authorRepository.deleteById(id);
     }
 }
