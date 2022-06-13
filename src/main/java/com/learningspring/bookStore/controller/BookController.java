@@ -32,14 +32,12 @@ public class BookController {
     public Optional<Book> getBookById(@PathVariable Long id) throws ResourceNotFoundException {
         return bookStoreService.getBookById(id);
     }
-/*
+
     //The function handles a POST request and Insert new books into database.
     @PostMapping("/addBook")
     public Book addBook(@RequestBody Book newBook) {
         return bookStoreService.addBook(newBook);
     }
-
- */
 
     //The function handles a PUT request to update book details and for the give authorId with the respective book
     @PutMapping("/updateBook/{bookId}/author/{authorId}")
