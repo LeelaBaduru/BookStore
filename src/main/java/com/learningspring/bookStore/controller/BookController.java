@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/books")
 public class BookController {
 
     @Autowired
@@ -22,25 +22,28 @@ public class BookController {
 
 
     //The function handles a GET request, processes it and gives back a list of Books as a response.
-    @GetMapping({"/{getBooks}"})
+    @GetMapping
     public  List<Book> getBooks() throws ResourceNotFoundException {
         return bookStoreService.getBooks();
     }
 
-    //The function handles a GET request for the given ID, processes it and gives back Book details for the given id as a response.
-    @GetMapping("/bookById/{id}")
+    //The function handles a GET request. For the given bookID, Book details are fetched from the database and returns the book details.
+    @GetMapping("/{id}")
     public Optional<Book> getBookById(@PathVariable Long id) throws ResourceNotFoundException {
         return bookStoreService.getBookById(id);
     }
 
-    //The function handles a POST request and Insert new books into database.
-    @PostMapping("/addBook")
-    public Book addBook(@RequestBody Book newBook) {
-        return bookStoreService.addBook(newBook);
+    //The function handles a POST request. Insert new books into database for the assigned authorId
+    @PostMapping("/authors/{authorId}")
+    public Book addBook( @RequestBody Book newBook, @PathVariable Long authorId) throws ResourceNotFoundException{
+        Book newBookCreated = newBook;
+        Author author = authorService.getAuthorById(authorId).get();
+        newBookCreated.setAuthor(author);
+        return bookStoreService.addBook(newBookCreated);
     }
 
-    //The function handles a PUT request to update book details and for the give authorId with the respective book
-    @PutMapping("/updateBook/{bookId}/author/{authorId}")
+     //The function handles a PUT request. Update book details and authorId with the respective book
+    @PutMapping("/{bookId}/authors/{authorId}")
     public Book updateBook(@RequestBody Book updateBook, @PathVariable Long bookId, @PathVariable Long authorId) throws ResourceNotFoundException {
         Book book = bookStoreService.getBookById(bookId).get();
         Author author = authorService.getAuthorById(authorId).get();
@@ -50,30 +53,12 @@ public class BookController {
                     book.setAuthor(author);
                     return bookStoreService.addBook(book);
                 }
-  /*              .orElseGet(() -> {
-                    updateBook.setId(bookId);
-                    return bookStoreService.addBook(updateBook);
-                });
-    } */
 
-    //The function handles a PUT request to assign author to a book
-    @PutMapping("/{bookId}/author/{authorId}")
-    Book assignAuthorToBook(
-            @PathVariable Long bookId,
-            @PathVariable Long authorId
-    ) throws ResourceNotFoundException {
-        Book book = bookStoreService.getBookById(bookId).get();
-        Author author = authorService.getAuthorById(authorId).get();
-        book.setAuthor(author);
-        return bookStoreService.addBook(book);
-    }
 
-    /*
-    //The function handles a DELETE request to delete book details from database.
-    @DeleteMapping("/deleteBook/{id}")
+     //The function handles a DELETE request to delete book details from a database.
+    @DeleteMapping("/{id}")
     void deleteBook(@PathVariable Long id) {
          bookStoreService.deleteBook(id);
     }
-    */
 
 }
