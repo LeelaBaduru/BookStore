@@ -59,8 +59,9 @@ public class BookController {
 
     //The function handles a DELETE request to delete book details from a database.
     @DeleteMapping("/{id}")
-    void deleteBook(@PathVariable Long id) {
-         bookStoreService.deleteBook(id);
+    void deleteBook(@PathVariable Long id) throws ResourceNotFoundException{
+
+        bookStoreService.deleteBook(id);
     }
 
 }

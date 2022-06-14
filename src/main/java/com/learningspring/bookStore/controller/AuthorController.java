@@ -1,6 +1,7 @@
 package com.learningspring.bookStore.controller;
 
 import com.learningspring.bookStore.entity.Author;
+import com.learningspring.bookStore.exception.ResourceNotFoundException;
 import com.learningspring.bookStore.service.AuthorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,9 @@ public class AuthorController {
         return authorService.addAuthor(newAuthor);
     }
 
-    //The function handles a DELETE request to delete book details from database.
+    //The function handles a DELETE request to delete Author details from database.
     @DeleteMapping("/{id}")
-    public void deleteAuthor(@PathVariable Long id) {
+    public void deleteAuthor(@PathVariable Long id) throws ResourceNotFoundException {
        authorService.deleteAuthor(id);
     }
 

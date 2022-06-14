@@ -12,9 +12,6 @@ import javax.persistence.*;
 
 public class Book {
 
-
-
-
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(unique = true)

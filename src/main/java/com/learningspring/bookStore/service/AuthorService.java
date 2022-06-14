@@ -37,7 +37,11 @@ public class AuthorService {
         return authorRepository.save(newAuthor);
     }
 
-    public void deleteAuthor(Long id) {
-      authorRepository.deleteById(id);
+    public void deleteAuthor(Long id) throws ResourceNotFoundException {
+        Optional<Author> author =  authorRepository.findById(id);
+        if(author.isPresent()) {
+          authorRepository.deleteById(id);
+        }
+        else throw new ResourceNotFoundException("Author is not available in database:" + id);
     }
 }
