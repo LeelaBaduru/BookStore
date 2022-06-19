@@ -23,7 +23,7 @@ public class BookController {
 
     //The function handles a GET request, processes it and gives back a list of Books as a response.
     @GetMapping
-    public  List<Book> getBooks() throws ResourceNotFoundException {
+    public List<Book> getBooks() throws ResourceNotFoundException {
         return bookStoreService.getBooks();
     }
 
@@ -36,7 +36,7 @@ public class BookController {
 
     //The function handles a POST request. Insert new books into database for the assigned authorId
     @PostMapping("/authors/{authorId}")
-    public Book addBook( @RequestBody Book newBook, @PathVariable Long authorId) throws ResourceNotFoundException{
+    public Book addBook(@RequestBody Book newBook, @PathVariable Long authorId) throws ResourceNotFoundException {
         Book newBookCreated = newBook;
         Author author = authorService.getAuthorById(authorId).get();
         newBookCreated.setAuthor(author);
@@ -49,17 +49,17 @@ public class BookController {
     public Book updateBook(@RequestBody Book updateBook, @PathVariable Long bookId, @PathVariable Long authorId) throws ResourceNotFoundException {
         Book book = bookStoreService.getBookById(bookId).get();
         Author author = authorService.getAuthorById(authorId).get();
-                    book.setIsbn(updateBook.getIsbn());
-                    book.setBook_Title(updateBook.getBook_Title());
-                    book.setPrice(updateBook.getPrice());
-                    book.setAuthor(author);
-                    return bookStoreService.addBook(book);
-                }
+        book.setIsbn(updateBook.getIsbn());
+        book.setBook_Title(updateBook.getBook_Title());
+        book.setPrice(updateBook.getPrice());
+        book.setAuthor(author);
+        return bookStoreService.addBook(book);
+    }
 
 
     //The function handles a DELETE request to delete book details from a database.
     @DeleteMapping("/{id}")
-    void deleteBook(@PathVariable Long id) throws ResourceNotFoundException{
+    void deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
 
         bookStoreService.deleteBook(id);
     }

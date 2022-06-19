@@ -2,7 +2,6 @@ package com.learningspring.bookStore.repository;
 
 import com.learningspring.bookStore.entity.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

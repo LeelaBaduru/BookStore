@@ -2,18 +2,20 @@ package com.learningspring.bookStore.entity;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-
+@Builder
 public class Book {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
     @NotNull
     private Long id;
@@ -22,9 +24,11 @@ public class Book {
     private String book_Title;
     private double price;
 
+
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
+
 
     public Long getId() {
         return id;
@@ -58,9 +62,11 @@ public class Book {
     public void setPrice(double price) {
         this.price = price;
     }
+
     public Author getAuthor() {
         return author;
     }
+
     public void setAuthor(Author author) {
         this.author = author;
     }
