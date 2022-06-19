@@ -22,7 +22,7 @@ public class BookStoreServiceImpl implements BookStoreService {
     @Override
     public List<Book> getBooks() throws ResourceNotFoundException {
         List<Book> booksList = bookRepository.findAll();
-        if(booksList.isEmpty()) {
+        if (booksList.isEmpty()) {
             throw new ResourceNotFoundException("Currently there are no books in store");
         }
         return booksList;
@@ -31,10 +31,9 @@ public class BookStoreServiceImpl implements BookStoreService {
     @Override
     public Optional<Book> getBookById(Long id) throws ResourceNotFoundException {
         Optional<Book> book = bookRepository.findById(id);
-        if(book.isPresent()) {
+        if (book.isPresent()) {
             return book;
-        }
-        else throw new ResourceNotFoundException("Book is not available in store:" + id);
+        } else throw new ResourceNotFoundException("Book is not available in store:" + id);
     }
 
     @Override
@@ -46,10 +45,9 @@ public class BookStoreServiceImpl implements BookStoreService {
     public void deleteBook(Long id) throws ResourceNotFoundException {
 
         Optional<Book> book = bookRepository.findById(id);
-        if(book.isPresent()) {
+        if (book.isPresent()) {
             bookRepository.deleteById(id);
-        }
-        else throw new ResourceNotFoundException("Book is not available in store:" + id);
+        } else throw new ResourceNotFoundException("Book is not available in store:" + id);
     }
 
 }

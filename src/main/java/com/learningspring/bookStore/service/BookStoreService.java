@@ -1,6 +1,7 @@
 package com.learningspring.bookStore.service;
 
 import com.learningspring.bookStore.entity.Book;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ public interface BookStoreService {
     Optional<Book> getBookById(Long id);
 
     Book addBook(Book newBook);
+
     void deleteBook(Long Id);
 
 }
