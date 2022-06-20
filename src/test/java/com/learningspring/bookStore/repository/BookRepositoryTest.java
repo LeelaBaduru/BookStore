@@ -24,7 +24,7 @@ public class BookRepositoryTest {
         Book book = Book.builder()
                 .id(1L)
                 .book_Title("Circus Lion")
-    //            .price(10)
+                .price(10)
                 .build();
         entityManager.merge(book);
     }
@@ -44,6 +44,5 @@ public class BookRepositoryTest {
         assertEquals(10.0, bookID.getPrice());
 
     }
-
 
 }

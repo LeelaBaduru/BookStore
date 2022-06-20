@@ -26,7 +26,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+
 @WebMvcTest(AuthorController.class)
 class AuthorControllerTest {
 
@@ -102,6 +102,14 @@ class AuthorControllerTest {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Test
+    public void deleteAuthor() throws Exception {
+        mvc.perform(MockMvcRequestBuilders
+                        .delete("/authors/{id}", 1))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").doesNotExist());
     }
 
 }
