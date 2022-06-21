@@ -1,7 +1,10 @@
 package com.learningspring.bookStore.service;
 
+import com.learningspring.bookStore.dto.Author_Book;
+import com.learningspring.bookStore.entity.Author;
 import com.learningspring.bookStore.entity.Book;
 import com.learningspring.bookStore.exception.ResourceNotFoundException;
+import com.learningspring.bookStore.repository.AuthorRepository;
 import com.learningspring.bookStore.repository.BookRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,9 @@ public class BookStoreServiceImpl implements BookStoreService {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private AuthorRepository authorRepository;
 
     @Override
     public List<Book> getBooks() throws ResourceNotFoundException {
@@ -48,6 +54,30 @@ public class BookStoreServiceImpl implements BookStoreService {
         if (book.isPresent()) {
             bookRepository.deleteById(id);
         } else throw new ResourceNotFoundException("Book is not available in store:" + id);
+    }
+
+    @Override
+    public List<Book> getBookByAuthorId(Long authorId) throws ResourceNotFoundException {
+        Optional<Author> author = authorRepository.findById(authorId);
+        if (author.isPresent()) {
+            return bookRepository.getBookByAuthorId(authorId);
+        } else throw new ResourceNotFoundException("Author is not available in store:" + authorId);
+    }
+
+    @Override
+    public List<Object> getBookNameListByAuthorId(Long authorId) throws ResourceNotFoundException {
+        Optional<Author> author = authorRepository.findById(authorId);
+        if (author.isPresent()) {
+         //   logger.info("Book Titles" + bookRepository.getBookTitleByAuthorId(authorId));
+            return bookRepository.getBookNameListByAuthorId(authorId);
+
+        } else throw new ResourceNotFoundException("Author is not available in store:" + authorId);
+    }
+
+    @Override
+    public List<Author_Book> getBookTitleAuthorName() {
+        return bookRepository.getBookTitleAuthorName();
+
     }
 
 }

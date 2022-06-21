@@ -1,7 +1,6 @@
 package com.learningspring.bookStore.controller;
 
 import com.learningspring.bookStore.entity.Author;
-import com.learningspring.bookStore.entity.Book;
 import com.learningspring.bookStore.exception.ResourceNotFoundException;
 import com.learningspring.bookStore.service.AuthorService;
 import org.slf4j.Logger;
@@ -38,9 +37,16 @@ public class AuthorController {
         authorService.deleteAuthor(id);
     }
 
-    //The function handles a GET request. For the given bookID, Book details are fetched from the database and returns the book details.
+    //The function handles a GET request. Fetch author details by name.
     @GetMapping("/name/{name}")
-    public  Optional<Author>  getAuthorByName(@PathVariable String name) throws ResourceNotFoundException {
+    public Optional<Author> getAuthorByName(@PathVariable String name) throws ResourceNotFoundException {
         return authorService.getAuthorByName(name);
     }
+
+    //The function handles a GET request. Fetch author details by name in ascending order.
+    @GetMapping("/name/asc_order")
+    public List<Author> getAuthorListByOrder() {
+        return authorService.getAuthorListByOrder();
+    }
+
 }
