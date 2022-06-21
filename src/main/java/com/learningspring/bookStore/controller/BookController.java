@@ -1,5 +1,6 @@
 package com.learningspring.bookStore.controller;
 
+import com.learningspring.bookStore.dto.Author_Book;
 import com.learningspring.bookStore.entity.Author;
 import com.learningspring.bookStore.entity.Book;
 import com.learningspring.bookStore.exception.ResourceNotFoundException;
@@ -34,7 +35,7 @@ public class BookController {
         return bookStoreService.getBookById(id);
     }
 
-    //The function handles a POST request. Insert new books into database for the assigned authorId
+    //The function handles a POST request. Insert new books into database for the given authorId
     @PostMapping("/authors/{authorId}")
     public Book addBook(@RequestBody Book newBook, @PathVariable Long authorId) throws ResourceNotFoundException {
         Book newBookCreated = newBook;
@@ -60,8 +61,26 @@ public class BookController {
     //The function handles a DELETE request to delete book details from a database.
     @DeleteMapping("/{id}")
     void deleteBook(@PathVariable Long id) throws ResourceNotFoundException {
-
         bookStoreService.deleteBook(id);
     }
 
+    //The function handles a GET request to fetch list of books for the given authorId.
+    @GetMapping("/authors/{authorId}")
+    public List<Book> getBookByAuthorId(@PathVariable Long authorId) throws ResourceNotFoundException {
+        return bookStoreService.getBookByAuthorId(authorId);
+    }
+
+    //The function handles a GET request to fetch list of book titles for the given authorId.
+    @GetMapping("/bookTitles/authors/{authorId}")
+    public List<Object> getBookNameListByAuthorId(@PathVariable Long authorId) throws ResourceNotFoundException {
+        List<Object> bookTitles = bookStoreService.getBookNameListByAuthorId(authorId);
+        return bookTitles;
+    }
+
+    //The function handles a GET request to fetch list of book titles and respective author name.
+    @GetMapping("/authors")
+    public List<Author_Book> getBookTitleAuthorName() {
+        List<Author_Book> booksList = bookStoreService.getBookTitleAuthorName();
+        return booksList;
+    }
 }

@@ -1,6 +1,8 @@
 package com.learningspring.bookStore.service;
 
+import com.learningspring.bookStore.dto.Author_Book;
 import com.learningspring.bookStore.entity.Book;
+import com.learningspring.bookStore.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,4 +19,9 @@ public interface BookStoreService {
 
     void deleteBook(Long Id);
 
+    List<Book> getBookByAuthorId(Long authorId);
+
+    List<Object> getBookNameListByAuthorId(Long authorId) throws ResourceNotFoundException;
+
+    List<Author_Book> getBookTitleAuthorName();
 }

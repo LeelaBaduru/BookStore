@@ -50,4 +50,8 @@ public class AuthorService {
         } else throw new ResourceNotFoundException("Author is not available in database:" + name);
 
     }
+
+    public List<Author> getAuthorListByOrder(){
+        return authorRepository.getAuthorByNameInOrder();
+    }
 }
