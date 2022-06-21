@@ -1,6 +1,5 @@
 package com.learningspring.bookStore.repository;
 
-import com.learningspring.bookStore.entity.Author;
 import com.learningspring.bookStore.entity.Book;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
