@@ -21,7 +21,7 @@ public interface BookStoreService {
 
     List<Book> getBookByAuthorId(Long authorId);
 
-    List<Object> getBookNameListByAuthorId(Long authorId) throws ResourceNotFoundException;
+    List<Author_Book> getBookNameListByAuthorId(Long authorId) throws ResourceNotFoundException;
 
     List<Author_Book> getBookTitleAuthorName();
 }

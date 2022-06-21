@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface AuthorRepository extends JpaRepository<Author, Long> {
     public Optional<Author> findByName(String name);
 
+    //Sorting query
     @Query("SELECT a FROM Author a ORDER BY a.name ASC")
     List<Author> getAuthorByNameInOrder();
 
