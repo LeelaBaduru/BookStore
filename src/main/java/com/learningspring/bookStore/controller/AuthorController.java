@@ -28,6 +28,7 @@ public class AuthorController {
     //The function handles a POST request. Insert new Author into database
     @PostMapping
     public Author addAuthor(@RequestBody Author newAuthor) {
+
         return authorService.addAuthor(newAuthor);
     }
 
