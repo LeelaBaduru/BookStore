@@ -22,6 +22,17 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
     show-sql: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: 84babbde2fb220d74917
+            clientSecret: 1b61c53bb35755501b85f523392c5480f5c6fb95
+          google:
+            clientId: 589751943945-sbhojfpnpqjrbl0t165u5v7rr2vlu3gj.apps.googleusercontent.com
+            clientSecret: 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
+
 
   #Hibernate properties
   hibernate:
