@@ -66,18 +66,18 @@ public class BookStoreServiceImpl implements BookStoreService {
     }
 
     @Override
-    public List<Author_Book> getBookNameListByAuthorId(Long authorId) throws ResourceNotFoundException {
+    public List<Author_Book> getBookTitleByAuthorId(Long authorId) throws ResourceNotFoundException {
         Optional<Author> author = authorRepository.findById(authorId);
         if (author.isPresent()) {
          //   logger.info("Book Titles" + bookRepository.getBookTitleByAuthorId(authorId));
-            return bookRepository.getBookNameListByAuthorId(authorId);
+            return bookRepository.getBookTitleByAuthorId(authorId);
 
         } else throw new ResourceNotFoundException("Author is not available in store:" + authorId);
     }
 
     @Override
-    public List<Author_Book> getBookTitleAuthorName() {
-        return bookRepository.getBookTitleAuthorName();
+    public List<Author_Book> getBookTitleAndAuthorName() {
+        return bookRepository.getBookTitleAndAuthorName();
 
     }
 

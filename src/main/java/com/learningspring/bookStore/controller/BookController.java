@@ -73,8 +73,8 @@ public class BookController {
 
     //The function handles a GET request to fetch list of book titles for the given authorId.
     @GetMapping("/bookTitles/authors/{authorId}")
-    public List<Author_Book> getBookNameListByAuthorId(@PathVariable Long authorId) throws ResourceNotFoundException {
-        List<Author_Book> bookTitles = bookStoreService.getBookNameListByAuthorId(authorId);
+    public List<Author_Book> getBookTitleByAuthorId(@PathVariable Long authorId) throws ResourceNotFoundException {
+        List<Author_Book> bookTitles = bookStoreService.getBookTitleByAuthorId(authorId);
         return bookTitles;
     }
 
