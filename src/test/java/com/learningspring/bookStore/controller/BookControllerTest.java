@@ -5,8 +5,7 @@ import com.learningspring.bookStore.entity.Author;
 import com.learningspring.bookStore.entity.Book;
 import com.learningspring.bookStore.service.AuthorService;
 import com.learningspring.bookStore.service.BookStoreService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(BookController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BookControllerTest {
 
 
@@ -42,7 +42,7 @@ class BookControllerTest {
     private Book book2;
     private Author author;
 
-    @BeforeEach
+    @BeforeAll
     void setUp() {
         author = Author.builder()
                 .id(1L)
@@ -68,6 +68,7 @@ class BookControllerTest {
 
 
     @Test
+    @DisplayName("Test to check if book is fetched for the given id")
     void getBookById() throws Exception {
         Mockito.when(bookStoreService.getBookById(1L)).thenReturn(Optional.ofNullable(book));
         mockMvc.perform(MockMvcRequestBuilders
@@ -80,6 +81,7 @@ class BookControllerTest {
 
 
     @Test
+    @DisplayName("Test to check if new book is inserted")
     void addBook() throws Exception {
         Book inputBook = Book.builder()
                 .id(2L)
@@ -105,6 +107,7 @@ class BookControllerTest {
     }
 
     @Test
+    @DisplayName("Test to check if book details are updated")
     void updateBook() throws Exception {
         Book inputBook = Book.builder()
                 .id(1L)
@@ -128,7 +131,8 @@ class BookControllerTest {
     }
 
     @Test
-    public void deleteAuthor() throws Exception {
+    @DisplayName("Test to check if book is deleted for the given bookId")
+    public void deleteBook() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/books/{id}", 1))

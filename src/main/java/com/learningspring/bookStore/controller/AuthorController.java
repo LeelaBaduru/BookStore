@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class AuthorController {
 
     //The function handles a POST request. Insert new Author into database
     @PostMapping
-    public Author addAuthor(@RequestBody Author newAuthor) {
+    public Author addAuthor(@RequestBody @Valid Author newAuthor) {
 
         return authorService.addAuthor(newAuthor);
     }

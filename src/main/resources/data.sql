@@ -2,6 +2,7 @@ INSERT INTO AUTHOR (name) VALUES ('William Shakespeare');
 INSERT INTO AUTHOR (name) VALUES ('Henry James');
 INSERT INTO AUTHOR (name) VALUES ('Jane Austen');
 INSERT INTO AUTHOR (name) VALUES ('Charles');
+INSERT INTO AUTHOR (name) VALUES ('Leo Tolstoy');
 INSERT INTO BOOK (isbn, book_Title, price, author_Id) VALUES ('978-1-62544-276-5', 'All My Friends', 10, 1);
 INSERT INTO BOOK (isbn, book_Title, price, author_Id) VALUES ('978-1-933624-46-4', 'Baby Elephant Goes for a Swim', 20.5, 1);
 INSERT INTO BOOK (isbn, book_Title, price, author_Id) VALUES ('978-1-933624-43-3', 'Baby Elephant’s Trunk', 25, 1);

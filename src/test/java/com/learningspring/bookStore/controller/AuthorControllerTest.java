@@ -36,12 +36,12 @@ class AuthorControllerTest {
     @MockBean
     private AuthorService authorService;
 
-    private Author author1;
-    private Author author2;
+    private static Author author1;
+    private static Author author2;
 
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    public static void setUp() {
         author1 = Author.builder().id(1L).name("Charles").build();
 
         author2 = Author.builder().id(2L).name("William").build();
@@ -49,11 +49,14 @@ class AuthorControllerTest {
 
 
     @Test
-    @DisplayName("Test to check if valid Author is fetched by given name")
+    @DisplayName("Test to check if valid Author is fetched for the given name")
     public void getAuthorByName() throws Exception, ResourceNotFoundException {
         String name = "Charles";
         Mockito.when(authorService.getAuthorByName(name)).thenReturn(Optional.of(author1));
-        mvc.perform(MockMvcRequestBuilders.get("/authors/name/{name}", name).accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Charles"));
+        mvc.perform(MockMvcRequestBuilders.get("/authors/name/{name}", name)
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value("Charles"));
 
 
     }
@@ -65,7 +68,7 @@ class AuthorControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/authors").accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andDo(print())
                 //       .andExpect(MockMvcResultMatchers.jsonPath(("$"), hasSize(3)))
                 //       .andExpect(MockMvcResultMatchers.jsonPath("$[0].name").value("Charles1"))
-                .andExpectAll(jsonPath(("$"), hasSize(2)), jsonPath("$[0].name").value("Charles"));
+                .andExpectAll(jsonPath(("$"), hasSize(2)), jsonPath("$[0].name").value("Charles1"));
     }
 
     @Test
@@ -86,6 +89,7 @@ class AuthorControllerTest {
     }
 
     @Test
+    @DisplayName("Test to check if author is deleted for the given authorId")
     public void deleteAuthor() throws Exception {
         mvc.perform(MockMvcRequestBuilders.delete("/authors/{id}", 1)).andExpect(status().isOk()).andExpect(MockMvcResultMatchers.jsonPath("$.id").doesNotExist());
     }

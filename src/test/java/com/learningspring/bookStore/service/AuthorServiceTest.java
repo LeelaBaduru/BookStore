@@ -1,10 +1,9 @@
 package com.learningspring.bookStore.service;
 
 import com.learningspring.bookStore.entity.Author;
+import com.learningspring.bookStore.exception.ResourceNotFoundException;
 import com.learningspring.bookStore.repository.AuthorRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -15,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AuthorServiceTest {
 
     @InjectMocks
@@ -25,7 +25,7 @@ public class AuthorServiceTest {
 
     private Author author;
 
-    @BeforeEach
+    @BeforeAll
     void setUp() {
          author = Author.builder()
                 .id(4L)
@@ -34,14 +34,21 @@ public class AuthorServiceTest {
     }
 
     @Test
-    @DisplayName("Test for getAuthorByName method")
-    public void givenAuthorName_whenValidAuthorName_thenAuthorShouldFound() {
-        Mockito.when(authorRepository.findByName("Charles")).thenReturn(Optional.ofNullable(author));
-
+    public void getAuthorByName() {
         String name = "Charles";
+
+        Mockito.when(authorRepository.findByName(name)).thenReturn(Optional.ofNullable(author));
         Optional<Author> foundName = authorService.getAuthorByName(name);
 
-        assertEquals(author.getName(), foundName.get().getName());
-        assertEquals(4L, foundName.get().getId());
+        assertAll(() -> assertEquals("Charles", foundName.get().getName()),
+                  () -> assertEquals(1L, foundName.get().getId()));
+    }
+
+    @Test
+    public void TestExceptionGetAuthorByName() {
+        ResourceNotFoundException resourceNotFoundException =  assertThrows(ResourceNotFoundException.class,
+                () -> authorService.getAuthorByName("Charles1"));
+        assertEquals("Author is not available in store:Charles1", resourceNotFoundException.getMessage());
+
     }
 }
