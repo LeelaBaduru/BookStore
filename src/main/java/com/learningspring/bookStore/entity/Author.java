@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,10 +20,12 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
     private Long id;
+
+    @NotBlank(message = "Author name should not be empty")
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "author", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private Set<Book> books = new HashSet<>();
 
     public Long getId() {
@@ -36,6 +39,7 @@ public class Author {
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;

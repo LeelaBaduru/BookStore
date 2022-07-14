@@ -1,8 +1,10 @@
 package com.learningspring.bookStore.repository;
 
 import com.learningspring.bookStore.entity.Book;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -32,19 +34,17 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void whenFindById_thenReturnBookTitle() {
+    public void findBookTitleById() {
 
         Book bookID = bookRepository.findById(1L).get();
         assertEquals("Circus Lion", bookID.getBook_Title());
-
     }
 
     @Test
-    public void whenFindById_thenReturnBookPrice() {
+    public void findBookPriceById() {
 
         Book bookID = bookRepository.findById(1L).get();
         assertEquals(10.0, bookID.getPrice());
-
     }
 
 }

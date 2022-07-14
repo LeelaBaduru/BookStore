@@ -29,7 +29,7 @@ public class AuthorService {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             return author;
-        } else throw new ResourceNotFoundException("Author is not available in database:" + id);
+        } else throw new ResourceNotFoundException("Author is not available in store:" + id);
     }
 
     public Author addAuthor(Author newAuthor) {
@@ -40,14 +40,14 @@ public class AuthorService {
         Optional<Author> author = authorRepository.findById(id);
         if (author.isPresent()) {
             authorRepository.deleteById(id);
-        } else throw new ResourceNotFoundException("Author is not available in database:" + id);
+        } else throw new ResourceNotFoundException("Author is not available in store:" + id);
     }
 
     public Optional<Author>  getAuthorByName(String name) throws ResourceNotFoundException {
         Optional<Author> authorName = authorRepository.findByName(name);
         if (authorName.isPresent()) {
             return authorName;
-        } else throw new ResourceNotFoundException("Author is not available in database:" + name);
+        } else throw new ResourceNotFoundException("Author is not available in store:" + name);
 
     }
 

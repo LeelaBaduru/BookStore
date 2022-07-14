@@ -1,11 +1,14 @@
 package com.learningspring.bookStore.entity;
 
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 
 @Entity
@@ -17,11 +20,17 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true)
-    @NotNull
+
     private Long id;
-    @Column(unique = true)
+
+    @NotBlank(message = "Book isbn should not be empty or null")
     private String isbn;
+
+    @NotBlank(message = "Book Title should not be empty or null")
     private String book_Title;
+
+    //  @NotEmpty(message = "Book price should not be null")
+    @Positive(message = "Enter valid book price")
     private double price;
 
 

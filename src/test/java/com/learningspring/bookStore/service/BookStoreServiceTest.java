@@ -2,10 +2,10 @@ package com.learningspring.bookStore.service;
 
 import com.learningspring.bookStore.entity.Author;
 import com.learningspring.bookStore.entity.Book;
+import com.learningspring.bookStore.exception.ResourceNotFoundException;
+import com.learningspring.bookStore.repository.AuthorRepository;
 import com.learningspring.bookStore.repository.BookRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -20,6 +20,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BookStoreServiceTest {
 
 
@@ -34,7 +35,7 @@ class BookStoreServiceTest {
 
     private Author author;
 
-    @BeforeEach
+    @BeforeAll
     void setUp() {
 
         author = Author.builder()
@@ -91,6 +92,14 @@ class BookStoreServiceTest {
                 .build();
        Book createdBook = bookStoreService.addBook(newBook);
         verify(bookRepository, times(1)).save(newBook);
+    }
+
+    @Test
+    public void TestExceptionGetBookById() {
+        ResourceNotFoundException resourceNotFoundException =  assertThrows(ResourceNotFoundException.class,
+                () -> bookStoreService.getBookById(12L));
+        assertEquals("Book is not available in store:12", resourceNotFoundException.getMessage());
+
     }
 
 }

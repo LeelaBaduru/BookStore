@@ -9,6 +9,7 @@ import com.learningspring.bookStore.service.BookStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,7 +38,7 @@ public class BookController {
 
     //The function handles a POST request. Insert new books into database for the given authorId
     @PostMapping("/authors/{authorId}")
-    public Book addBook(@RequestBody Book newBook, @PathVariable Long authorId) throws ResourceNotFoundException {
+    public Book addBook(@RequestBody @Valid Book newBook, @PathVariable Long authorId) throws ResourceNotFoundException {
         Book newBookCreated = newBook;
         Author author = authorService.getAuthorById(authorId).get();
         newBookCreated.setAuthor(author);
@@ -47,7 +48,7 @@ public class BookController {
 
     //The function handles a PUT request. Update book details and authorId with the respective book
     @PutMapping("/{bookId}/authors/{authorId}")
-    public Book updateBook(@RequestBody Book updateBook, @PathVariable Long bookId, @PathVariable Long authorId) throws ResourceNotFoundException {
+    public Book updateBook(@RequestBody  @Valid Book updateBook, @PathVariable Long bookId, @PathVariable Long authorId) throws ResourceNotFoundException {
         Book book = bookStoreService.getBookById(bookId).get();
         Author author = authorService.getAuthorById(authorId).get();
         book.setIsbn(updateBook.getIsbn());
