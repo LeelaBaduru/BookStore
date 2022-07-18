@@ -99,7 +99,5 @@ class BookStoreServiceTest {
         ResourceNotFoundException resourceNotFoundException =  assertThrows(ResourceNotFoundException.class,
                 () -> bookStoreService.getBookById(12L));
         assertEquals("Book is not available in store:12", resourceNotFoundException.getMessage());
-
     }
-
 }
