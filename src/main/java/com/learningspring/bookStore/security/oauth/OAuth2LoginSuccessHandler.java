@@ -1,6 +1,7 @@
 package com.learningspring.bookStore.security.oauth;
 
 import com.learningspring.bookStore.controller.LoginController;
+import com.learningspring.bookStore.entity.Customer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,15 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String name = oAuth2User.getName();
         logger.info("Customer's name: " + name);
 
-        userService.processOAuthPostLogin(oAuth2User.getEmail());
+        String username;
+
+        if ( email != null ) {
+
+           username = email;
+
+        } else username = name;
+
+        userService.processOAuthPostLogin(username);
 
 
         super.onAuthenticationSuccess(request, response, authentication);

@@ -81,7 +81,7 @@ public class BookController {
     //The function handles a GET request to fetch list of book titles and respective author name.
     @GetMapping("/authors")
     public List<Author_Book> getBookTitleAuthorName() {
-        List<Author_Book> booksList = bookStoreService.getBookTitleAuthorName();
+        List<Author_Book> booksList = bookStoreService.getBookTitleAndAuthorName();
         return booksList;
     }
 }
