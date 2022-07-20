@@ -2,6 +2,7 @@ package com.learningspring.bookStore.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ public class LoginController {
 
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/user")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
         logger.info("name:" + principal.getAttribute("name"));
