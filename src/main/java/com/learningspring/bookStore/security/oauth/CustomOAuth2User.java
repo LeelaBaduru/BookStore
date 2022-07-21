@@ -1,13 +1,11 @@
 package com.learningspring.bookStore.security.oauth;
 
-import com.learningspring.bookStore.entity.Customer;
+
 import com.learningspring.bookStore.entity.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
@@ -24,6 +22,7 @@ public class CustomOAuth2User implements OAuth2User{
         this.oauth2User = oauth2User;
     }
 
+
     @Override
     public Map<String, Object> getAttributes() {
 
@@ -32,9 +31,14 @@ public class CustomOAuth2User implements OAuth2User{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-      return oauth2User.getAuthorities();
-
+        return null;
     }
+
+/*    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+      return oauth2User.getAuthorities();
+    }  */
+
 
     @Override
     public String getName() {

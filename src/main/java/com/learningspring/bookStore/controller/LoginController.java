@@ -17,7 +17,6 @@ public class LoginController {
 
     private static Logger logger = LoggerFactory.getLogger(LoginController.class);
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/user")
     public Map<String, Object> user(@AuthenticationPrincipal OAuth2User principal) {
         logger.info("name:" + principal.getAttribute("name"));
@@ -29,6 +28,11 @@ public class LoginController {
         String message = (String) request.getSession().getAttribute("error.message");
         request.getSession().removeAttribute("error.message");
         return message;
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello User";
     }
 
 }

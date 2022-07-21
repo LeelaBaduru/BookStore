@@ -5,7 +5,7 @@ import com.learningspring.bookStore.entity.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
+
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,11 +36,13 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
+
         return customer.getPassword();
     }
 
     @Override
     public String getUsername() {
+
         return customer.getUsername();
     }
 
@@ -61,6 +63,7 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+
         return customer.isEnabled();
     }
 }

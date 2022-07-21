@@ -10,20 +10,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -31,21 +25,15 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 public class WebSecurityConfig {
 
     private static Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
-    private static final String[] WHITE_LIST_URLS = {"/", "/error", "/webjars/**", "/books/**", "/authors/**"
+    private static final String[] WHITE_LIST_URLS = {"/", "/error", "/webjars/**", "/authors/**"
     };
+
 
     @Autowired
     private CustomOAuth2UserService oauthUserService;
 
     @Autowired
     private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
-    }
-
-
 
 
   /*  @Bean
@@ -96,27 +84,17 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        logger.info("Inside DaoAuthenticationProvider");
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-
-    @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
+     //   SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
 
         http
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(WHITE_LIST_URLS).permitAll()
-                //   .antMatchers("/user").hasAuthority("ADMIN")
-                //   .antMatchers("/books").hasAnyAuthority( "ADMIN")
+               // .antMatchers("/admin/admin.html").hasRole("ADMIN")
+                 .antMatchers("/hello").hasAuthority("USER")
                 .and()
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .logout(l -> l.logoutSuccessUrl("/").permitAll())
@@ -132,7 +110,7 @@ public class WebSecurityConfig {
                 .oauth2Login()
                 .loginPage("/login")
                 .userInfoEndpoint()
-                .userService(oauthUserService)
+              //  .userService(oauthUserService)
                 .and()
                 .successHandler(oAuth2LoginSuccessHandler);
         return http.build();
