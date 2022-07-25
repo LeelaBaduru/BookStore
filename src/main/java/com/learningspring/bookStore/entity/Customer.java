@@ -16,7 +16,7 @@ import java.util.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer implements UserDetails {
+public class Customer {
 
     @Id
     @Column(name = "user_id")
@@ -24,21 +24,21 @@ public class Customer implements UserDetails {
     private Long id;
     private String username;
 
-    private String password;
- //   private String role;
+    private String password = "pass";
+    //   private String role;
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)
     private AuthenticationProvider provider;
 
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private List<Role> roles = new ArrayList<>();
 
     public Long getId() {
 
@@ -55,11 +55,12 @@ public class Customer implements UserDetails {
         this.provider = provider;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
+        System.out.println("inside get role");
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
@@ -67,29 +68,4 @@ public class Customer implements UserDetails {
         this.roles.add(role);
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-     //   Set<Role> roles = customer.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
-        return authorities;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
 }

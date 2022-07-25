@@ -2,7 +2,6 @@ package com.learningspring.bookStore.config;
 
 import com.learningspring.bookStore.security.oauth.CustomOAuth2UserService;
 import com.learningspring.bookStore.security.oauth.OAuth2LoginSuccessHandler;
-import com.learningspring.bookStore.security.oauth.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,29 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
 @Configuration
 @EnableWebSecurity
@@ -25,18 +39,16 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 public class WebSecurityConfig {
 
     private static Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
-    private static final String[] WHITE_LIST_URLS = {"/", "/error", "/webjars/**", "/authors/**"
-    };
+    private static final String[] WHITE_LIST_URLS = {"/", "/error", "/webjars/**", "/authors/**"};
 
 
     @Autowired
     private CustomOAuth2UserService oauthUserService;
-
     @Autowired
     private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
 
-  /*  @Bean
+ /*   @Bean
     public WebClient rest(ClientRegistrationRepository clients, OAuth2AuthorizedClientRepository authz) {
         ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2 =
                 new ServletOAuth2AuthorizedClientExchangeFilterFunction(clients, authz);
@@ -78,6 +90,7 @@ public class WebSecurityConfig {
         };
     }  */
 
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -86,18 +99,14 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-     //   SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
+        //   SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
 
-        http
-                .cors().and()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(WHITE_LIST_URLS).permitAll()
-               // .antMatchers("/admin/admin.html").hasRole("ADMIN")
-                 .antMatchers("/hello").hasAuthority("USER")
-                .and()
-                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .logout(l -> l.logoutSuccessUrl("/").permitAll())
+
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers(WHITE_LIST_URLS).permitAll()
+                .antMatchers("/admin").hasRole("ADMIN").antMatchers("/books").hasAnyRole("USER", "ADMIN").and()
+
+
+                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))).logout(l -> l.logoutSuccessUrl("/").permitAll())
                 /*    .oauth2Login(o -> o
                      .failureHandler((request, response, exception) -> {
                          request.getSession().setAttribute("error.message", exception.getMessage());
@@ -107,12 +116,10 @@ public class WebSecurityConfig {
 
                      }));  */
 
-                .oauth2Login()
-                .loginPage("/login")
-                .userInfoEndpoint()
-              //  .userService(oauthUserService)
-                .and()
-                .successHandler(oAuth2LoginSuccessHandler);
+                .oauth2Login().loginPage("/login").userInfoEndpoint()
+                //       .userService(oauthUserService)
+                .and().successHandler(oAuth2LoginSuccessHandler);
+
         return http.build();
 
     }
