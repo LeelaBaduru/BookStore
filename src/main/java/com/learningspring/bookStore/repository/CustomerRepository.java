@@ -8,7 +8,12 @@ import org.springframework.data.repository.query.Param;
 
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    @Query("SELECT c FROM Customer c WHERE c.username = :username")
-    public Customer getUserByUsername(@Param("username") String username);
+
+ /*   @Query("SELECT c FROM Customer c WHERE c.username = :username")
+    public Customer getUserByUsername(@Param("username") String username);  */
+
+    public Customer getUserByUsername(String username);
+
+
 }
   

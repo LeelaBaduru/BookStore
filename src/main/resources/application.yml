@@ -21,6 +21,10 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
     show-sql: true
+    defer-datasource-initialization: true
+  main:
+    allow-circular-references: true
+
 
   security:
     oauth2:

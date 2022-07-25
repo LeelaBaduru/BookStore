@@ -1,7 +1,5 @@
 package com.learningspring.bookStore.config;
 
-import com.learningspring.bookStore.controller.LoginController;
-import com.learningspring.bookStore.security.oauth.CustomOAuth2User;
 import com.learningspring.bookStore.security.oauth.CustomOAuth2UserService;
 import com.learningspring.bookStore.security.oauth.OAuth2LoginSuccessHandler;
 import org.slf4j.Logger;
@@ -10,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -23,18 +23,11 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepo
 import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.OAuth2Error;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -42,19 +35,20 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 
 @Configuration
 @EnableWebSecurity
+
 public class WebSecurityConfig {
 
     private static Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
-    private static final String[] WHITE_LIST_URLS = {"/", "/error", "/webjars/**", "/authors/**", "/books/**"
-    };
+    private static final String[] WHITE_LIST_URLS = {"/", "/error", "/webjars/**", "/authors/**", "/books/**"};
+
 
     @Autowired
     private CustomOAuth2UserService oauthUserService;
-
     @Autowired
     private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
-  /*  @Bean
+
+ /*   @Bean
     public WebClient rest(ClientRegistrationRepository clients, OAuth2AuthorizedClientRepository authz) {
         ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2 =
                 new ServletOAuth2AuthorizedClientExchangeFilterFunction(clients, authz);
@@ -98,33 +92,33 @@ public class WebSecurityConfig {
 
 
     @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
+        //   SimpleUrlAuthenticationFailureHandler handler = new SimpleUrlAuthenticationFailureHandler();
 
-        http
-                .cors().and()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers(WHITE_LIST_URLS).permitAll()
-                .and()
-                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .logout(l -> l.logoutSuccessUrl("/").permitAll())
-           /*    .oauth2Login(o -> o
-                .failureHandler((request, response, exception) -> {
-                    request.getSession().setAttribute("error.message", exception.getMessage());
-                    handler.onAuthenticationFailure(request, response, exception);
-                    logger.info("exception.getMessage() " + exception.getMessage());
-                    logger.info("handler exception: " + exception);
 
-                }));  */
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers(WHITE_LIST_URLS).permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/customer").hasRole("USER")
+                .antMatchers("/books").hasAnyRole("USER", "ADMIN").and()
+                .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))).logout(l -> l.logoutSuccessUrl("/").permitAll())
+                /*    .oauth2Login(o -> o
+                     .failureHandler((request, response, exception) -> {
+                         request.getSession().setAttribute("error.message", exception.getMessage());
+                         handler.onAuthenticationFailure(request, response, exception);
+                         logger.info("exception.getMessage() " + exception.getMessage());
+                         logger.info("handler exception: " + exception);
 
-        .oauth2Login()
-                .loginPage("/login")
-                .userInfoEndpoint()
-                .userService(oauthUserService)
-                .and()
-                .successHandler(oAuth2LoginSuccessHandler);
+                     }));  */
+
+                .oauth2Login().loginPage("/login").userInfoEndpoint()
+                //       .userService(oauthUserService)
+                .and().successHandler(oAuth2LoginSuccessHandler);
 
         return http.build();
 
