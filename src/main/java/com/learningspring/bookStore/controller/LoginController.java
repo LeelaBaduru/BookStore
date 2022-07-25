@@ -43,4 +43,9 @@ public class LoginController {
         return "Hello Admin, Welcome!";
     }
 
+    @GetMapping("/customer")
+    public String customer() {
+        return "Hello User, Welcome to Book Store!";
+    }
+
 }

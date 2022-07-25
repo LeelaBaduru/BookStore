@@ -39,7 +39,7 @@ import static org.springframework.security.oauth2.client.web.reactive.function.c
 public class WebSecurityConfig {
 
     private static Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
-    private static final String[] WHITE_LIST_URLS = {"/", "/error", "/webjars/**", "/authors/**"};
+    private static final String[] WHITE_LIST_URLS = {"/", "/error", "/webjars/**", "/authors/**", "/books/**"};
 
 
     @Autowired
@@ -103,9 +103,9 @@ public class WebSecurityConfig {
 
 
         http.cors().and().csrf().disable().authorizeRequests().antMatchers(WHITE_LIST_URLS).permitAll()
-                .antMatchers("/admin").hasRole("ADMIN").antMatchers("/books").hasAnyRole("USER", "ADMIN").and()
-
-
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/customer").hasRole("USER")
+                .antMatchers("/books").hasAnyRole("USER", "ADMIN").and()
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))).logout(l -> l.logoutSuccessUrl("/").permitAll())
                 /*    .oauth2Login(o -> o
                      .failureHandler((request, response, exception) -> {
