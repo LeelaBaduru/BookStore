@@ -13,7 +13,7 @@ INSERT INTO BOOK (isbn, book_Title, price, author_Id) VALUES ('978-1-62544-248-2
 INSERT INTO BOOK (isbn, book_Title, price, author_Id) VALUES ('978-1-62544-225-5', 'Penguins at the Zoo', 30, 4);
 INSERT INTO BOOK (isbn, book_Title, price, author_Id) VALUES ('978-1-62544-286-1', 'Sharks at the Aquarium', 10.20, 2);
 INSERT INTO BOOK (isbn, book_Title, price, author_Id) VALUES ('978-1-62544-274-9', 'Tigers at the Zoo', 19.20, 4);
-INSERT INTO CUSTOMER (username, password, enabled, provider) VALUES ('TokyoTheGreat1234', 'PASSWORD1', 'True', 'GITHUB');
+INSERT INTO CUSTOMER (username, password, enabled, email, provider) VALUES ('TokyoTheGreat1234', 'PASSWORD1', 'True', 'tokyothegreat1234@gmail.com', 'GITHUB');
 INSERT INTO ROLE (name) VALUES ('ROLE_ADMIN');
 INSERT INTO ROLE (name) VALUES ('ROLE_USER');
 INSERT INTO USERS_ROLES (user_id, role_id) VALUES (1, 1);

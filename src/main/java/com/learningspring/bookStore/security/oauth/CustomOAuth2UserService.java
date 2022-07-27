@@ -51,33 +51,30 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        logger.info("Inside CustomOAuth2UserService class");
-
         OAuth2User user = super.loadUser(userRequest);
-        String username;
 
         logger.info("User name:" + user.getAttribute("name"));
         logger.info("User email:" + user.getAttribute("email"));
 
 
-
-
-        if (user.getAttribute("email") != null) {
+     /*   if (user.getAttribute("email") != null) {
             username = user.getAttribute("email");
-        } else username = user.getAttribute("name");
+        } else username = user.getAttribute("name");  */
+
+        String username = user.getAttribute("name");
 
         //    Customer customer = userService.processOAuthPostLogin(username);
         Customer existUser = customerRepository.getUserByUsername(username);
 
         if (existUser == null) {
-            logger.info("Inside new user creation");
             Customer newUser = new Customer();
             newUser.setUsername(username);
             newUser.setEnabled(true);
+            newUser.setEmail(user.getAttribute("email"));
 
             if ("github".equals(userRequest.getClientRegistration().getRegistrationId())) {
-           // if (user.getAttribute("email") == null) {
-                //   if (request.getRequestURI().contains("github")) {
+                // if (user.getAttribute("email") == null) {
+                // if (request.getRequestURI().contains("github")) {
                 newUser.setProvider(AuthenticationProvider.GITHUB);
             } else newUser.setProvider(AuthenticationProvider.GOOGLE);
 
@@ -97,7 +94,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         logger.info("user:" + user.toString());
 
         // return new CustomOAuth2User(user);
-
         return new CustomOAuth2User(existUser);
 
     }
