@@ -28,14 +28,14 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             throws IOException, ServletException {
 
         logger.info("Inside Success Handler");
-        CustomOAuth2User loggedInUser = (CustomOAuth2User) authentication.getPrincipal();
+ /*       CustomOAuth2User loggedInUser = (CustomOAuth2User) authentication.getPrincipal();
 
 
         //   logger.info("oAuth2User:" + oAuth2User.getAttributes());
 
         logger.info("loggedInUser Email:" + loggedInUser.getEmail());
         logger.info("loggedInUser name:" + loggedInUser.getName());
-        logger.info("authentication.getName():" + authentication.getName());
+        logger.info("authentication.getName():" + authentication.getName());  */
 
         super.onAuthenticationSuccess(request, response, authentication);
     }
