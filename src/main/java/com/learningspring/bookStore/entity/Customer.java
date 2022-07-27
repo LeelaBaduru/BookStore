@@ -28,6 +28,8 @@ public class Customer {
     //   private String role;
     private boolean enabled;
 
+    private String Email;
+
     @Enumerated(EnumType.STRING)
     private AuthenticationProvider provider;
 
